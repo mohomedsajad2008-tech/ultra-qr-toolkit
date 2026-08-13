@@ -1008,7 +1008,7 @@ select:focus{
         <button class="primary" onclick="startCamera()">Start Camera</button>
       </div>
 
-      <video id="video" playsinline muted class="hidden"></video>
+      <video id="video" playsinline autoplay muted class="hidden"></video>
       <canvas id="scanCanvas" class="hidden"></canvas>
 
       <div class="scan-overlay hidden" id="scanOverlay">
@@ -1301,7 +1301,6 @@ let facing = "environment";
 let flash = false;
 let currentQRText = "";
 let currentQRColor = "#07111f";
-let frameCount = 0;
 
 let settings = JSON.parse(
   localStorage.getItem("ultraQR_settings") ||
@@ -1384,10 +1383,8 @@ function detectType(data){
   return "Text";
 }
 
-// Security Threat Check
 function checkUrlSafety(url){
   if(!settings.shield) return {safe: true, msg: "Shield Disabled"};
-  // Check for suspicious IP URLs or unusual patterns
   if(/https?:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.test(url)){
     return {safe: false, msg: "Suspicious IP-based URL detected!"};
   }
@@ -1475,20 +1472,25 @@ window.startCamera = async function(){
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("Camera unavailable");
     stopCamera();
     stream = await navigator.mediaDevices.getUserMedia({
-      video:{ facingMode: facing, width:{ ideal:1280 }, height:{ ideal:1280 } },
-      audio:false
+      video: {
+        facingMode: { ideal: facing },
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      },
+      audio: false
     });
     track = stream.getVideoTracks()[0];
-    $("video").srcObject = stream;
-    $("video").classList.remove("hidden");
+    const video = $("video");
+    video.srcObject = stream;
+    video.classList.remove("hidden");
     $("cameraPlaceholder").classList.add("hidden");
     $("scanOverlay").classList.remove("hidden");
-    await $("video").play();
+    await video.play();
     scanning = true;
     tick();
     toast("Camera ready");
   }catch(e){
-    toast("Camera permission unavailable");
+    toast("Camera permission or access failed");
   }
 };
 
@@ -1499,13 +1501,16 @@ window.switchCamera = async function(){
 
 window.toggleFlash = async function(){
   if(!track){ toast("Start camera first"); return; }
-  const caps = track.getCapabilities?.() || {};
-  if(!caps.torch){ toast("Flash not supported"); return; }
-  flash = !flash;
   try{
-    await track.applyConstraints({ advanced:[{ torch: flash }] });
+    flash = !flash;
+    await track.applyConstraints({
+      advanced: [{ torch: flash }]
+    });
     toast(flash ? "Flash on" : "Flash off");
-  }catch(e){ toast("Flash unavailable"); }
+  }catch(e){
+    flash = !flash;
+    toast("Flash not supported on this device");
+  }
 };
 
 window.setZoom = function(value){
@@ -1532,10 +1537,8 @@ function stopCamera(){
 
 function tick(){
   if(!scanning) return;
-  frameCount++;
-  if(frameCount % 3 !== 0){ raf = requestAnimationFrame(tick); return; }
   const video = $("video");
-  if(video.readyState >= 2 && video.videoWidth){
+  if(video.readyState === video.HAVE_ENOUGH_DATA && video.videoWidth > 0){
     const canvas = $("scanCanvas");
     const ctx = canvas.getContext("2d", { willReadFrequently:true });
     canvas.width = video.videoWidth;
@@ -1587,7 +1590,6 @@ function showResult(data){
 
   $("resultDomain").textContent = domain ? "Domain: " + domain : "";
 
-  // Security Check render
   const safety = checkUrlSafety(data);
   const badgeContainer = $("securityBadgeContainer");
   if(safety.safe){
@@ -1636,6 +1638,7 @@ $("saveBtn").onclick = () => {
 };
 
 window.pickImage = function(){ $("imageInput").click(); };
+
 $("imageInput").onchange = async function(e){
   const file = e.target.files[0];
   if(!file) return;
@@ -1643,10 +1646,22 @@ $("imageInput").onchange = async function(e){
   img.onload = () => {
     const canvas = $("scanCanvas");
     const ctx = canvas.getContext("2d", { willReadFrequently:true });
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    ctx.drawImage(img, 0, 0);
-    const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    let width = img.naturalWidth;
+    let height = img.naturalHeight;
+    const maxDim = 1000;
+    if (width > maxDim || height > maxDim) {
+      if (width > height) {
+        height = Math.round((height * maxDim) / width);
+        width = maxDim;
+      } else {
+        width = Math.round((width * maxDim) / height);
+        height = maxDim;
+      }
+    }
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(img, 0, 0, width, height);
+    const data = ctx.getImageData(0, 0, width, height);
     const code = window.jsQR?.(data.data, data.width, data.height, { inversionAttempts:"attemptBoth" });
     if(code && code.data){
       handleScan(code.data);
@@ -1729,7 +1744,6 @@ window.generateQR = function(){
     $("qrBox").classList.remove("hidden");
     $("downloadQR").disabled = false;
 
-    // Center Badge
     const badgeEl = $("qrLogoBadge");
     if(badgeVal !== "none"){
       badgeEl.textContent = badgeVal;
@@ -1873,4 +1887,3 @@ window.addEventListener("beforeunload", stopCamera);
 
 </body>
 </html>
-
