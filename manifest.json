@@ -1,0 +1,22 @@
+{
+  "name": "ULTRA QR Toolkit",
+  "short_name": "ULTRA QR",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050b14",
+  "theme_color": "#07111f",
+  "description": "Secure QR scanner, phishing threat shield and custom badge generator.",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+
