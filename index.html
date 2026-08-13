@@ -122,7 +122,7 @@ input:focus, textarea:focus, select:focus{ border-color:var(--cyan); box-shadow:
 .ai-insight-box b{ color:var(--purple); display:block; margin-bottom:3px; }
 
 .result-type{ font-size:10px; color:var(--cyan); font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
-.result-content{ font-size:14px; line-height:1.55; word-break:break-word; margin:7px 0 13px; }
+.result-content{ font-size:14px; line-height:1.5; margin:7px 0 13px; resize:none; background:rgba(4,11,20,.85); }
 .result-domain{ font-size:11px; color:var(--muted); margin-bottom:10px; }
 
 .history-item{ display:flex; align-items:center; gap:11px; padding:12px 0; border-bottom:1px solid var(--line); }
@@ -263,7 +263,8 @@ input:focus, textarea:focus, select:focus{ border-color:var(--cyan); box-shadow:
   <div class="card result" id="resultCard">
     <div id="securityBadgeContainer"></div>
     <div class="result-type" id="resultType">Detected</div>
-    <div class="result-content" id="resultContent"></div>
+    <!-- Result content is now inside a clean text box -->
+    <textarea class="result-content" id="resultContent" readonly></textarea>
     <div class="result-domain" id="resultDomain"></div>
     <div class="ai-insight-box" id="aiInsightBox">
       <b>🧠 Local AI Intelligence Insight:</b>
@@ -551,7 +552,6 @@ let settings = JSON.parse(
 let history = JSON.parse(localStorage.getItem("ultraQR_history") || "[]");
 let favorites = JSON.parse(localStorage.getItem("ultraQR_favorites") || "[]");
 
-// Initialize Local AI Model in Background
 async function initAIModel(){
   if(aiClassifier) return;
   try{
@@ -883,13 +883,18 @@ async function handleScan(data){
       osc.stop(ac.currentTime + .12);
     }catch(e){}
   }
+  
+  // Auto scroll smoothly to the result card right after scanning
+  setTimeout(() => {
+    $("resultCard").scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
 }
 
 async function showResult(data){
   currentQRText = data;
   $("resultCard").classList.add("show");
   $("resultType").textContent = detectType(data);
-  $("resultContent").textContent = data;
+  $("resultContent").value = data; // Display scanned text inside a textarea box
 
   let domain = "";
   try{
@@ -1132,7 +1137,6 @@ $("clearQR").onclick = () => {
   toast("Cleared");
 };
 
-// AI Text Analyzer Tool
 window.runAITextAnalysis = async function(){
   const text = $("aiAnalyzeInput").value.trim();
   if(!text){ toast("Enter text to analyze"); return; }
@@ -1156,7 +1160,6 @@ window.runAITextAnalysis = async function(){
   toast("AI Analysis complete");
 };
 
-// Security Tools Functions
 window.generatePassword = function(){
   const length = parseInt($("pwdLength").value) || 16;
   const includeSymbols = $("pwdSymbols").value === "yes";
@@ -1255,3 +1258,4 @@ window.addEventListener("beforeunload", stopCamera);
 
 </body>
 </html>
+
