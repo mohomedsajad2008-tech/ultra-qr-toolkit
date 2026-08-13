@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<meta name="description" content="ULTRA QR — Smart Secure QR Toolkit">
+<link rel="manifest" href="manifest.json">
+<title>ULTRA QR — Secure Smart Toolkit</title>
+
+<style>
+:root{
+  --bg:#050b14;
+  --bg2:#081321;
+  --card:rgba(14,27,44,.78);
+  --card2:rgba(18,34,54,.9);
+  --line:rgba(147,180,220,.18);
+  --text:#f4f7ff;
+  --muted:#9caec7;
+  --dim:#647691;
+  --cyan:#00e5ff;
+  --pink:#ff4d73;
+  --purple:#9b6cff;
+  --green:#00e5a0;
+  --danger:#ff5570;
+  --shadow:0 18px 50px rgba(0,0,0,.35);
+  --radius:22px;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+  background:
+    radial-gradient(700px 400px at 100% -10%,rgba(0,229,255,.13),transparent 60%),
+    radial-gradient(600px 400px at -10% 55%,rgba(155,108,255,.10),transparent 60%),
+    linear-gradient(180deg,#07101d,#050b14 70%);
+}
+
+button,input,textarea,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  min-height:100vh;
+  max-width:760px;
+  margin:auto;
+  position:relative;
+  padding-bottom:92px;
+}
+
+/* HEADER */
+header{
+  position:sticky;
+  top:0;
+  z-index:30;
+  padding:15px 18px 13px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(5,11,20,.82);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--line);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.brand-logo{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  font-size:12px;
+  color:#031015;
+  background:linear-gradient(135deg,var(--cyan),#4df6d2 45%,var(--pink));
+  box-shadow:0 0 24px rgba(0,229,255,.25);
+}
+
+.brand h1{
+  font-size:19px;
+  margin:0;
+  font-weight:900;
+  letter-spacing:.3px;
+}
+
+.brand p{
+  font-size:10px;
+  color:var(--muted);
+  margin:2px 0 0;
+  letter-spacing:.07em;
+}
+
+.header-actions{
+  display:flex;
+  gap:7px;
+}
+
+.icon-btn{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  border:1px solid var(--line);
+  background:rgba(15,28,45,.7);
+  color:var(--text);
+  display:grid;
+  place-items:center;
+  font-size:18px;
+}
+
+.icon-btn:active,
+.nav-btn:active,
+.tool:active,
+.primary:active,
+.secondary:active{
+  transform:scale(.96);
+}
+
+/* MAIN */
+main{
+  padding:18px;
+}
+
+.page{
+  display:none;
+  animation:pageIn .22s ease;
+}
+
+.page.active{
+  display:block;
+}
+
+@keyframes pageIn{
+  from{
+    opacity:0;
+    transform:translateY(7px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+/* HERO */
+.hero{
+  padding:22px;
+  border:1px solid var(--line);
+  border-radius:25px;
+  background:
+    radial-gradient(350px 160px at 100% 0,rgba(0,229,255,.12),transparent 70%),
+    linear-gradient(145deg,rgba(18,35,55,.92),rgba(8,17,29,.82));
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  position:relative;
+}
+
+.hero:after{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  right:-80px;
+  bottom:-100px;
+  border:1px solid rgba(0,229,255,.15);
+  box-shadow:0 0 50px rgba(0,229,255,.08);
+}
+
+.eyebrow{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--cyan);
+  font-weight:800;
+}
+
+.hero h2{
+  font-size:28px;
+  line-height:1.12;
+  margin:8px 0 9px;
+}
+
+.hero p{
+  color:var(--muted);
+  line-height:1.55;
+  margin:0;
+  max-width:590px;
+}
+
+.hero-actions{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+}
+
+/* BUTTONS */
+.primary,
+.secondary{
+  border:0;
+  border-radius:15px;
+  padding:13px 15px;
+  font-weight:850;
+  transition:.15s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.primary{
+  background:linear-gradient(135deg,var(--cyan),#00b8ff);
+  color:#031017;
+  box-shadow:0 8px 25px rgba(0,229,255,.18);
+}
+
+.secondary{
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--line);
+  color:var(--text);
+}
+
+/* SECTION */
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:23px 2px 11px;
+}
+
+.section-title h3{
+  margin:0;
+  font-size:15px;
+}
+
+.section-title span{
+  color:var(--dim);
+  font-size:11px;
+}
+
+/* STATS DASHBOARD */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.stat-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:12px;
+  text-align:center;
+}
+
+.stat-card b{
+  font-size:18px;
+  color:var(--cyan);
+  display:block;
+}
+
+.stat-card small{
+  font-size:10px;
+  color:var(--muted);
+}
+
+/* TOOLS */
+.tool-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.tool{
+  border:1px solid var(--line);
+  border-radius:19px;
+  background:var(--card);
+  padding:16px;
+  text-align:left;
+  color:var(--text);
+  min-height:112px;
+  transition:.15s;
+  box-shadow:0 10px 30px rgba(0,0,0,.13);
+}
+
+.tool .emoji{
+  font-size:25px;
+  display:block;
+  margin-bottom:9px;
+}
+
+.tool b{
+  display:block;
+  font-size:14px;
+}
+
+.tool small{
+  display:block;
+  color:var(--muted);
+  margin-top:4px;
+  line-height:1.3;
+}
+
+/* CARD */
+.card{
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:17px;
+  box-shadow:var(--shadow);
+}
+
+/* TABS */
+.tabs{
+  display:flex;
+  gap:7px;
+  padding:4px;
+  background:rgba(15,27,44,.8);
+  border:1px solid var(--line);
+  border-radius:16px;
+  margin-bottom:15px;
+}
+
+.tab{
+  flex:1;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:11px 6px;
+  border-radius:12px;
+  font-weight:800;
+  font-size:13px;
+}
+
+.tab.active{
+  background:linear-gradient(135deg,var(--cyan),#16c8ff);
+  color:#031017;
+}
+
+/* FORM */
+.label{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--dim);
+  font-weight:800;
+  margin:15px 0 7px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  background:rgba(4,11,20,.7);
+  border:1px solid var(--line);
+  color:var(--text);
+  border-radius:14px;
+  padding:13px;
+  outline:0;
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+  line-height:1.5;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:var(--cyan);
+  box-shadow:0 0 0 3px rgba(0,229,255,.08);
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+/* CHIPS */
+.chips{
+  display:flex;
+  gap:7px;
+  overflow:auto;
+  padding:2px 0 4px;
+  scrollbar-width:none;
+}
+
+.chips::-webkit-scrollbar{
+  display:none;
+}
+
+.chip{
+  white-space:nowrap;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.035);
+  color:var(--muted);
+  border-radius:20px;
+  padding:8px 11px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.chip.active{
+  border-color:var(--cyan);
+  color:var(--cyan);
+  background:rgba(0,229,255,.07);
+}
+
+/* QR PREVIEW */
+.qr-preview{
+  min-height:300px;
+  margin-top:15px;
+  border-radius:20px;
+  border:1px solid var(--line);
+  display:grid;
+  place-items:center;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(45deg,rgba(255,255,255,.025) 25%,transparent 25%,transparent 75%,rgba(255,255,255,.025) 75%) 0 0/24px 24px,
+    linear-gradient(45deg,rgba(255,255,255,.025) 25%,transparent 25%,transparent 75%,rgba(255,255,255,.025) 75%) 12px 12px/24px 24px,
+    #0b1422;
+}
+
+.qr-box{
+  background:white;
+  padding:13px;
+  border-radius:15px;
+  box-shadow:0 12px 35px rgba(0,0,0,.35);
+  position:relative;
+}
+
+.qr-box canvas{
+  display:block;
+  max-width:100%;
+}
+
+.qr-logo-badge{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:42px;
+  height:42px;
+  background:#fff;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  font-size:20px;
+  box-shadow:0 4px 12px rgba(0,0,0,.2);
+  border:2px solid #000;
+}
+
+.empty{
+  color:var(--dim);
+  text-align:center;
+  font-size:13px;
+  padding:30px;
+}
+
+.action-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:12px;
+}
+
+/* SCANNER */
+.scan-box{
+  position:relative;
+  overflow:hidden;
+  border-radius:23px;
+  background:#000;
+  border:1px solid var(--line);
+  aspect-ratio:1/1;
+  display:grid;
+  place-items:center;
+}
+
+#video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.scan-overlay{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.reticle{
+  position:absolute;
+  left:12%;
+  right:12%;
+  top:12%;
+  bottom:12%;
+  border:2px solid rgba(0,229,255,.9);
+  border-radius:22px;
+  box-shadow:
+    0 0 0 999px rgba(0,0,0,.28),
+    0 0 25px rgba(0,229,255,.2);
+}
+
+.scanline{
+  position:absolute;
+  left:14%;
+  right:14%;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  box-shadow:0 0 14px var(--cyan);
+  animation:sweep 2.2s ease-in-out infinite;
+}
+
+@keyframes sweep{
+  0%,100%{top:14%}
+  50%{top:86%}
+}
+
+.camera-placeholder{
+  text-align:center;
+  padding:30px;
+  color:var(--muted);
+}
+
+.camera-placeholder .big{
+  font-size:45px;
+}
+
+.camera-controls{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  margin-top:10px;
+}
+
+.camera-controls button{
+  padding:11px 5px;
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--text);
+  border-radius:14px;
+  font-size:12px;
+  font-weight:800;
+}
+
+/* RESULT & SECURITY WARNING */
+.result{
+  margin-top:12px;
+  display:none;
+}
+
+.result.show{
+  display:block;
+  animation:pageIn .2s ease;
+}
+
+.security-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.security-badge.safe{
+  background:rgba(0,229,160,.12);
+  color:var(--green);
+  border:1px solid rgba(0,229,160,.3);
+}
+
+.security-badge.warning{
+  background:rgba(255,85,112,.15);
+  color:var(--danger);
+  border:1px solid rgba(255,85,112,.3);
+}
+
+.result-type{
+  font-size:10px;
+  color:var(--cyan);
+  font-weight:900;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.result-content{
+  font-size:14px;
+  line-height:1.55;
+  word-break:break-word;
+  margin:7px 0 13px;
+}
+
+.result-domain{
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+/* HISTORY */
+.history-item{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.history-item:last-child{
+  border-bottom:0;
+}
+
+.history-icon{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  background:rgba(0,229,255,.08);
+  display:grid;
+  place-items:center;
+  font-size:19px;
+  flex:none;
+}
+
+.history-main{
+  min-width:0;
+  flex:1;
+}
+
+.history-main b{
+  display:block;
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.history-main small{
+  color:var(--dim);
+  font-size:10px;
+}
+
+.history-actions{
+  display:flex;
+  gap:5px;
+}
+
+.mini{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--muted);
+  border-radius:10px;
+  width:33px;
+  height:33px;
+}
+
+.empty-history{
+  text-align:center;
+  color:var(--dim);
+  padding:35px 10px;
+}
+
+/* SETTINGS */
+.setting{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.setting:last-child{
+  border-bottom:0;
+}
+
+.setting b{
+  font-size:13px;
+}
+
+.setting small{
+  display:block;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+.switch-toggle{
+  width:46px;
+  height:26px;
+  border-radius:20px;
+  background:#26364d;
+  border:0;
+  padding:3px;
+  transition:.2s;
+}
+
+.switch-toggle:after{
+  content:"";
+  display:block;
+  width:20px;
+  height:20px;
+  background:#fff;
+  border-radius:50%;
+  transition:.2s;
+}
+
+.switch-toggle.on{
+  background:var(--cyan);
+}
+
+.switch-toggle.on:after{
+  transform:translateX(20px);
+}
+
+.color-row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.color-dot{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  border:2px solid transparent;
+}
+
+.color-dot.selected{
+  border-color:#fff;
+  box-shadow:0 0 0 2px rgba(255,255,255,.25);
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(8px);
+  z-index:80;
+  display:none;
+  align-items:flex-end;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-panel{
+  width:100%;
+  max-width:760px;
+  margin:auto 0 0;
+  background:#091321;
+  border:1px solid var(--line);
+  border-radius:26px 26px 0 0;
+  padding:18px 18px calc(20px + var(--safe-bottom));
+  max-height:86vh;
+  overflow:auto;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.modal-head h3{
+  margin:0;
+}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:95px;
+  transform:translateX(-50%) translateY(15px);
+  background:#14243a;
+  border:1px solid var(--line);
+  color:var(--text);
+  padding:11px 15px;
+  border-radius:13px;
+  font-size:12px;
+  z-index:100;
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  box-shadow:var(--shadow);
+  white-space:nowrap;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%);
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;
+  z-index:50;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(760px,100%);
+  padding:8px 8px calc(8px + var(--safe-bottom));
+  background:rgba(5,12,21,.9);
+  backdrop-filter:blur(22px);
+  border-top:1px solid var(--line);
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+}
+
+.nav-btn{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  border-radius:16px;
+  padding:8px 3px 6px;
+  font-size:10px;
+  font-weight:800;
+  transition:.15s;
+}
+
+.nav-btn span{
+  display:block;
+  font-size:20px;
+  margin-bottom:3px;
+}
+
+.nav-btn.active{
+  color:var(--pink);
+  background:rgba(255,77,115,.09);
+}
+
+.hidden{
+  display:none!important;
+}
+
+@media(min-width:650px){
+  .app{
+    border-left:1px solid var(--line);
+    border-right:1px solid var(--line);
+  }
+
+  main{
+    padding:22px;
+  }
+
+  .modal-panel{
+    border-radius:26px;
+    margin:auto;
+  }
+
+  .bottom-nav{
+    border-radius:24px 24px 0 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+  <div class="brand">
+    <div class="brand-logo">QR</div>
+    <div>
+      <h1>ULTRA QR</h1>
+      <p>SECURE SMART TOOLKIT</p>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <button class="icon-btn" id="langBtn" aria-label="Language">EN</button>
+    <button class="icon-btn" id="settingsBtn" aria-label="Settings">⚙️</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= HOME ================= -->
+<section class="page active" id="homePage">
+
+  <div class="hero">
+    <div class="eyebrow">
+      🔒 Enhanced Security • Offline Safe
+    </div>
+
+    <h2 id="heroTitle">
+      Your secure QR intelligence hub.
+    </h2>
+
+    <p id="heroText">
+      Scan with advanced threat protection, generate customizable encrypted QR badges, and manage safely.
+    </p>
+
+    <div class="hero-actions">
+      <button class="primary" onclick="go('scan')">
+        📷 Scan Securely
+      </button>
+
+      <button class="secondary" onclick="go('create')">
+        ✨ Create QR
+      </button>
+    </div>
+  </div>
+
+  <!-- STATS DASHBOARD -->
+  <div class="section-title" style="margin-top:20px">
+    <h3>Security & Usage Stats</h3>
+    <span>Live</span>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <b id="statTotal">0</b>
+      <small>Total Scans</small>
+    </div>
+    <div class="stat-card">
+      <b id="statSafe" style="color:var(--green)">100%</b>
+      <small>Safe Index</small>
+    </div>
+    <div class="stat-card">
+      <b id="statFav" style="color:var(--pink)">0</b>
+      <small>Saved</small>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h3>Quick Tools</h3>
+    <span>Secure</span>
+  </div>
+
+  <div class="tool-grid">
+    <button class="tool" onclick="go('scan')">
+      <span class="emoji">📷</span>
+      <b>Smart Scanner</b>
+      <small>Phishing shield active</small>
+    </button>
+
+    <button class="tool" onclick="go('create');setType('wifi')">
+      <span class="emoji">📶</span>
+      <b>Wi-Fi QR</b>
+      <small>Secure WPA sharing</small>
+    </button>
+
+    <button class="tool" onclick="go('create');setType('url')">
+      <span class="emoji">🔗</span>
+      <b>URL QR</b>
+      <small>Website builder</small>
+    </button>
+
+    <button class="tool" onclick="go('create');setType('contact')">
+      <span class="emoji">👤</span>
+      <b>vCard QR</b>
+      <small>Contact sharing</small>
+    </button>
+  </div>
+
+  <div class="section-title">
+    <h3>Recent Scans</h3>
+    <button class="secondary" style="padding:7px 10px;font-size:10px" onclick="go('history')">View all</button>
+  </div>
+
+  <div class="card" id="homeRecent"></div>
+
+</section>
+
+
+<!-- ================= SCANNER ================= -->
+<section class="page" id="scanPage">
+
+  <div class="section-title">
+    <h3>📷 Secure QR Scanner</h3>
+    <span>Protected Mode</span>
+  </div>
+
+  <div class="card">
+    <div class="scan-box" id="scanBox">
+      <div class="camera-placeholder" id="cameraPlaceholder">
+        <div class="big">📷</div>
+        <p>Point camera with built-in threat detection.</p>
+        <button class="primary" onclick="startCamera()">Start Camera</button>
+      </div>
+
+      <video id="video" playsinline muted class="hidden"></video>
+      <canvas id="scanCanvas" class="hidden"></canvas>
+
+      <div class="scan-overlay hidden" id="scanOverlay">
+        <div class="reticle"></div>
+        <div class="scanline"></div>
+      </div>
+    </div>
+
+    <div class="camera-controls">
+      <button onclick="toggleFlash()">🔦 Flash</button>
+      <button onclick="switchCamera()">🔄 Camera</button>
+      <button onclick="pickImage()">🖼️ Gallery</button>
+    </div>
+
+    <input type="file" id="imageInput" accept="image/*" class="hidden">
+
+    <div class="label">Zoom</div>
+    <input id="zoomRange" type="range" min="1" max="3" step=".1" value="1" oninput="setZoom(this.value)">
+    <div style="display:flex;justify-content:space-between;color:var(--dim);font-size:10px;margin-top:4px">
+      <span>1×</span>
+      <span id="zoomValue">1×</span>
+      <span>3×</span>
+    </div>
+  </div>
+
+  <div class="card result" id="resultCard">
+    <div id="securityBadgeContainer"></div>
+    <div class="result-type" id="resultType">Detected</div>
+    <div class="result-content" id="resultContent"></div>
+    <div class="result-domain" id="resultDomain"></div>
+
+    <div class="action-row">
+      <button class="primary" id="openBtn">Open Safely</button>
+      <button class="secondary" id="copyBtn">Copy</button>
+    </div>
+
+    <div class="action-row">
+      <button class="secondary" id="shareBtn">📤 Share</button>
+      <button class="secondary" id="saveBtn">⭐ Save</button>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ================= CREATE ================= -->
+<section class="page" id="createPage">
+
+  <div class="section-title">
+    <h3>✨ Secure QR Generator</h3>
+    <span>Custom Badges</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-type="url">🔗 URL</button>
+    <button class="tab" data-type="text">📝 Text</button>
+    <button class="tab" data-type="wifi">📶 Wi-Fi</button>
+    <button class="tab" data-type="contact">👤 Contact</button>
+  </div>
+
+  <div class="chips">
+    <button class="chip active" data-type="url">URL</button>
+    <button class="chip" data-type="text">Text</button>
+    <button class="chip" data-type="phone">Phone</button>
+    <button class="chip" data-type="email">Email</button>
+    <button class="chip" data-type="sms">SMS</button>
+    <button class="chip" data-type="wifi">Wi-Fi</button>
+    <button class="chip" data-type="contact">Contact</button>
+    <button class="chip" data-type="location">Location</button>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div id="formArea"></div>
+
+    <div class="label">QR Style & Badge Icon</div>
+    <div class="row">
+      <select id="qrStyle">
+        <option value="square">Classic</option>
+        <option value="dots">Dots</option>
+        <option value="rounded">Rounded</option>
+      </select>
+
+      <select id="centerBadge">
+        <option value="none">No Center Icon</option>
+        <option value="🤖">🤖 AI Badge</option>
+        <option value="⚡">⚡ Ultra Icon</option>
+        <option value="🔗">🔗 Link Icon</option>
+        <option value="💼">💼 Pro Badge</option>
+      </select>
+    </div>
+
+    <div class="label">Error Correction & Accent</div>
+    <div class="row">
+      <select id="errorLevel">
+        <option value="H">High (H) - Required for Icons</option>
+        <option value="M">Medium (M)</option>
+        <option value="Q">Quartile (Q)</option>
+        <option value="L">Low (L)</option>
+      </select>
+    </div>
+
+    <div class="label">Accent Color</div>
+    <div class="color-row" id="colorRow">
+      <button class="color-dot selected" data-color="#07111f" style="background:#07111f"></button>
+      <button class="color-dot" data-color="#00dfff" style="background:#00dfff"></button>
+      <button class="color-dot" data-color="#9b6cff" style="background:#9b6cff"></button>
+      <button class="color-dot" data-color="#00d99a" style="background:#00d99a"></button>
+      <button class="color-dot" data-color="#ff4d73" style="background:#ff4d73"></button>
+    </div>
+
+    <div class="label">Background Color</div>
+    <input id="bgColor" type="color" value="#ffffff" style="height:45px;padding:5px">
+  </div>
+
+  <div class="qr-preview" id="qrPreview">
+    <div class="empty" id="qrEmpty">Your secure QR code will appear here.</div>
+    <div class="qr-box hidden" id="qrBox">
+      <canvas id="qrCanvas"></canvas>
+      <div id="qrLogoBadge" class="qr-logo-badge hidden">🤖</div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="primary" onclick="generateQR()">Generate Secure QR</button>
+    <button class="secondary" id="downloadQR" disabled>⬇️ Download</button>
+  </div>
+
+  <div class="action-row">
+    <button class="secondary" id="shareQR">📤 Share</button>
+    <button class="secondary" id="clearQR">🧹 Clear</button>
+  </div>
+
+</section>
+
+
+<!-- ================= HISTORY ================= -->
+<section class="page" id="historyPage">
+  <div class="section-title">
+    <h3>🕘 Secure History</h3>
+    <button class="secondary" style="padding:7px 10px;font-size:10px" onclick="clearHistory()">Clear</button>
+  </div>
+  <div class="card" id="historyList"></div>
+</section>
+
+
+<!-- ================= SETTINGS ================= -->
+<section class="page" id="settingsPage">
+  <div class="section-title">
+    <h3>⚙️ Security & Settings</h3>
+    <span>Preferences</span>
+  </div>
+
+  <div class="card">
+    <div class="setting">
+      <div>
+        <b>🛡️ Phishing Threat Shield</b>
+        <small>Warn against suspicious URLs</small>
+      </div>
+      <button class="switch-toggle on" id="shieldToggle" onclick="toggleSetting('shield')"></button>
+    </div>
+
+    <div class="setting">
+      <div>
+        <b>📳 Vibration</b>
+        <small>Feedback after scan</small>
+      </div>
+      <button class="switch-toggle on" id="vibrateToggle" onclick="toggleSetting('vibrate')"></button>
+    </div>
+
+    <div class="setting">
+      <div>
+        <b>🔊 Scan Sound</b>
+        <small>Audio alert on detection</small>
+      </div>
+      <button class="switch-toggle on" id="soundToggle" onclick="toggleSetting('sound')"></button>
+    </div>
+
+    <div class="setting">
+      <div>
+        <b>📋 Auto-copy Text</b>
+        <small>Copy results automatically</small>
+      </div>
+      <button class="switch-toggle" id="autocopyToggle" onclick="toggleSetting('autocopy')"></button>
+    </div>
+
+    <div class="setting">
+      <div>
+        <b>🌙 Dark Appearance</b>
+        <small>OLED optimized styling</small>
+      </div>
+      <button class="switch-toggle on" id="darkToggle" onclick="toggleSetting('dark')"></button>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h3>🌈 Accent Color</h3>
+  </div>
+  <div class="card">
+    <div class="color-row" id="themeColors">
+      <button class="color-dot selected" data-theme="#00e5ff" style="background:#00e5ff"></button>
+      <button class="color-dot" data-theme="#9b6cff" style="background:#9b6cff"></button>
+      <button class="color-dot" data-theme="#00e5a0" style="background:#00e5a0"></button>
+      <button class="color-dot" data-theme="#ff4d73" style="background:#ff4d73"></button>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h3>🌍 Language</h3>
+  </div>
+  <div class="card">
+    <select id="languageSelect">
+      <option value="en">English</option>
+      <option value="si">සිංහල</option>
+    </select>
+  </div>
+
+  <div class="section-title">
+    <h3>💾 Data & Backup</h3>
+  </div>
+  <div class="card">
+    <div class="action-row">
+      <button class="secondary" onclick="exportData()">Export Backup</button>
+      <button class="secondary" onclick="document.getElementById('importInput').click()">Import Backup</button>
+    </div>
+    <input type="file" id="importInput" accept=".json,application/json" class="hidden">
+    <button class="secondary" style="width:100%;margin-top:9px" onclick="clearAllData()">🗑️ Clear All Local Data</button>
+  </div>
+
+  <div class="section-title">
+    <h3>ℹ️ About</h3>
+  </div>
+  <div class="card">
+    <p style="color:var(--muted);line-height:1.6;font-size:13px;margin:0">
+      <b style="color:var(--text)">ULTRA QR v2.2 (Secured Edition)</b><br>
+      Smart QR scanner with threat protection and badge generation.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-page="home"><span>🏠</span>Home</button>
+  <button class="nav-btn" data-page="scan"><span>📷</span>Scan</button>
+  <button class="nav-btn" data-page="create"><span>✨</span>Create</button>
+  <button class="nav-btn" data-page="history"><span>🕘</span>History</button>
+  <button class="nav-btn" data-page="settings"><span>⚙️</span>Settings</button>
+</nav>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- QUICK SETTINGS MODAL -->
+<div class="modal" id="quickModal">
+  <div class="modal-panel">
+    <div class="modal-head">
+      <h3>⚡ Quick Security Settings</h3>
+      <button class="icon-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="setting">
+      <div>
+        <b>🛡️ Threat Shield</b>
+        <small>URL Security</small>
+      </div>
+      <button class="switch-toggle on" id="mshield" onclick="toggleSetting('shield')"></button>
+    </div>
+    <button class="primary" style="width:100%;margin-top:14px" onclick="go('settings');closeModal()">Open Full Settings</button>
+  </div>
+</div>
+
+<!-- QR LIBRARIES -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
+<script>
+(function(){
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+let currentPage = "home";
+let currentType = "url";
+let stream = null;
+let scanning = false;
+let raf = null;
+let track = null;
+let facing = "environment";
+let flash = false;
+let currentQRText = "";
+let currentQRColor = "#07111f";
+let frameCount = 0;
+
+let settings = JSON.parse(
+  localStorage.getItem("ultraQR_settings") ||
+  '{"vibrate":true,"sound":true,"autocopy":false,"shield":true,"dark":true}'
+);
+
+let history = JSON.parse(localStorage.getItem("ultraQR_history") || "[]");
+let favorites = JSON.parse(localStorage.getItem("ultraQR_favorites") || "[]");
+
+function save(){
+  localStorage.setItem("ultraQR_history", JSON.stringify(history));
+  localStorage.setItem("ultraQR_favorites", JSON.stringify(favorites));
+  updateStats();
+}
+
+function updateStats(){
+  if($("statTotal")) $("statTotal").textContent = history.length;
+  if($("statFav")) $("statFav").textContent = favorites.length;
+}
+
+function toast(msg){
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(window.__toast);
+  window.__toast = setTimeout(() => t.classList.remove("show"), 1800);
+}
+
+window.go = function(page){
+  stopCamera();
+  currentPage = page;
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  $(page + "Page").classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(b =>
+    b.classList.toggle("active", b.dataset.page === page)
+  );
+
+  if(page === "history") renderHistory();
+  if(page === "home") { renderHomeRecent(); updateStats(); }
+  if(page === "create") renderForm();
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+document.querySelectorAll(".nav-btn").forEach(b =>
+  b.addEventListener("click", () => go(b.dataset.page))
+);
+
+$("settingsBtn").onclick = () => $("quickModal").classList.add("show");
+function closeModal(){ $("quickModal").classList.remove("show"); }
+window.closeModal = closeModal;
+
+function applySettings(){
+  document.documentElement.style.setProperty("--cyan", settings.dark ? "#00e5ff" : "#0077ff");
+  ["vibrateToggle","soundToggle","autocopyToggle","shieldToggle","darkToggle","mshield"].forEach(id => {
+    const el = $(id);
+    if(!el) return;
+    let key = id.includes("vib") ? "vibrate" : id.includes("sound") ? "sound" : id.includes("autocopy") ? "autocopy" : id.includes("shield") ? "shield" : "dark";
+    el.classList.toggle("on", !!settings[key]);
+  });
+}
+
+window.toggleSetting = function(key){
+  settings[key] = !settings[key];
+  localStorage.setItem("ultraQR_settings", JSON.stringify(settings));
+  applySettings();
+  toast("Setting updated");
+};
+
+applySettings();
+
+function detectType(data){
+  if(/^https?:\/\//i.test(data)) return "Website";
+  if(/^mailto:/i.test(data)) return "Email";
+  if(/^tel:/i.test(data)) return "Phone";
+  if(/^sms:/i.test(data)) return "SMS";
+  if(/^WIFI:/i.test(data)) return "Wi-Fi";
+  if(/^BEGIN:VCARD/i.test(data)) return "Contact";
+  if(/^geo:/i.test(data)) return "Location";
+  return "Text";
+}
+
+// Security Threat Check
+function checkUrlSafety(url){
+  if(!settings.shield) return {safe: true, msg: "Shield Disabled"};
+  // Check for suspicious IP URLs or unusual patterns
+  if(/https?:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.test(url)){
+    return {safe: false, msg: "Suspicious IP-based URL detected!"};
+  }
+  if(/(@|%40)/.test(url)){
+    return {safe: false, msg: "Potential phishing credential injection found!"};
+  }
+  return {safe: true, msg: "Verified Secure Link"};
+}
+
+function addHistory(data){
+  const item = { id: Date.now(), data: data, type: detectType(data), time: new Date().toISOString() };
+  history = history.filter(x => x.data !== data);
+  history.unshift(item);
+  history = history.slice(0,50);
+  save();
+  renderHomeRecent();
+}
+
+function renderHomeRecent(){
+  const box = $("homeRecent");
+  if(!history.length){
+    box.innerHTML = '<div class="empty-history">No scans yet.<br>Scan a QR code to view history.</div>';
+    return;
+  }
+  box.innerHTML = history.slice(0,4).map(historyHTML).join("");
+}
+
+function historyHTML(x){
+  const icons = { Website:"🌐", Email:"✉️", Phone:"📞", SMS:"💬", "Wi-Fi":"📶", Contact:"👤", Location:"📍", Text:"📝" };
+  return `
+  <div class="history-item">
+    <div class="history-icon">${icons[x.type] || "🔳"}</div>
+    <div class="history-main">
+      <b>${escapeHTML(x.data)}</b>
+      <small>${x.type} · ${new Date(x.time).toLocaleString()}</small>
+    </div>
+    <div class="history-actions">
+      <button class="mini" onclick='copyText(${JSON.stringify(x.data)})'>⧉</button>
+      <button class="mini" onclick="deleteHistory(${x.id})">×</button>
+    </div>
+  </div>`;
+}
+
+function renderHistory(){
+  const box = $("historyList");
+  if(!history.length){
+    box.innerHTML = '<div class="empty-history">🕘<br><br>Your scan history is empty.</div>';
+    return;
+  }
+  box.innerHTML = history.map(historyHTML).join("");
+}
+
+window.deleteHistory = function(id){
+  history = history.filter(x => x.id !== id);
+  save();
+  renderHistory();
+  renderHomeRecent();
+  toast("Removed");
+};
+
+window.clearHistory = function(){
+  if(confirm("Clear scan history?")){
+    history = [];
+    save();
+    renderHistory();
+    renderHomeRecent();
+    toast("History cleared");
+  }
+};
+
+window.copyText = function(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(() => toast("Copied"));
+  }else{
+    toast("Copy unavailable");
+  }
+};
+
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[m]));
+}
+
+window.startCamera = async function(){
+  try{
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("Camera unavailable");
+    stopCamera();
+    stream = await navigator.mediaDevices.getUserMedia({
+      video:{ facingMode: facing, width:{ ideal:1280 }, height:{ ideal:1280 } },
+      audio:false
+    });
+    track = stream.getVideoTracks()[0];
+    $("video").srcObject = stream;
+    $("video").classList.remove("hidden");
+    $("cameraPlaceholder").classList.add("hidden");
+    $("scanOverlay").classList.remove("hidden");
+    await $("video").play();
+    scanning = true;
+    tick();
+    toast("Camera ready");
+  }catch(e){
+    toast("Camera permission unavailable");
+  }
+};
+
+window.switchCamera = async function(){
+  facing = facing === "environment" ? "user" : "environment";
+  if(stream) await startCamera();
+};
+
+window.toggleFlash = async function(){
+  if(!track){ toast("Start camera first"); return; }
+  const caps = track.getCapabilities?.() || {};
+  if(!caps.torch){ toast("Flash not supported"); return; }
+  flash = !flash;
+  try{
+    await track.applyConstraints({ advanced:[{ torch: flash }] });
+    toast(flash ? "Flash on" : "Flash off");
+  }catch(e){ toast("Flash unavailable"); }
+};
+
+window.setZoom = function(value){
+  $("zoomValue").textContent = Number(value).toFixed(1) + "×";
+  if(track && track.getCapabilities){
+    const c = track.getCapabilities();
+    if(c.zoom){
+      track.applyConstraints({ advanced:[{ zoom: Number(value) }] }).catch(()=>{});
+    }
+  }
+};
+
+function stopCamera(){
+  scanning = false;
+  if(raf) cancelAnimationFrame(raf);
+  raf = null;
+  if(track){ try{ track.applyConstraints({ advanced:[{ torch:false }] }); }catch(e){} }
+  if(stream){ stream.getTracks().forEach(t => t.stop()); stream = null; track = null; }
+  if($("video")){ $("video").pause(); $("video").srcObject = null; $("video").classList.add("hidden"); }
+  if($("cameraPlaceholder")) $("cameraPlaceholder").classList.remove("hidden");
+  if($("scanOverlay")) $("scanOverlay").classList.add("hidden");
+  flash = false;
+}
+
+function tick(){
+  if(!scanning) return;
+  frameCount++;
+  if(frameCount % 3 !== 0){ raf = requestAnimationFrame(tick); return; }
+  const video = $("video");
+  if(video.readyState >= 2 && video.videoWidth){
+    const canvas = $("scanCanvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently:true });
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const code = window.jsQR?.(imageData.data, imageData.width, imageData.height, { inversionAttempts:"attemptBoth" });
+    if(code && code.data){
+      handleScan(code.data);
+      return;
+    }
+  }
+  raf = requestAnimationFrame(tick);
+}
+
+function handleScan(data){
+  stopCamera();
+  showResult(data);
+  addHistory(data);
+  if(settings.autocopy) copyText(data);
+  if(settings.vibrate && navigator.vibrate) navigator.vibrate([80,40,100]);
+  if(settings.sound){
+    try{
+      const ac = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+      osc.frequency.value = 880;
+      gain.gain.value = .035;
+      osc.connect(gain);
+      gain.connect(ac.destination);
+      osc.start();
+      osc.stop(ac.currentTime + .12);
+    }catch(e){}
+  }
+}
+
+function showResult(data){
+  currentQRText = data;
+  $("resultCard").classList.add("show");
+  $("resultType").textContent = detectType(data);
+  $("resultContent").textContent = data;
+
+  let domain = "";
+  try{
+    if(/^https?:\/\//i.test(data)){
+      domain = new URL(data).hostname;
+    }
+  }catch(e){}
+
+  $("resultDomain").textContent = domain ? "Domain: " + domain : "";
+
+  // Security Check render
+  const safety = checkUrlSafety(data);
+  const badgeContainer = $("securityBadgeContainer");
+  if(safety.safe){
+    badgeContainer.innerHTML = `<div class="security-badge safe">🛡️ ${safety.msg}</div>`;
+  }else{
+    badgeContainer.innerHTML = `<div class="security-badge warning">⚠️ ${safety.msg}</div>`;
+  }
+
+  $("openBtn").style.display = /^(https?:\/\/|mailto:|tel:|sms:)/i.test(data) ? "flex" : "none";
+}
+
+$("openBtn").onclick = () => {
+  if(/^https?:\/\//i.test(currentQRText)){
+    const safety = checkUrlSafety(currentQRText);
+    if(!safety.safe){
+      if(!confirm("WARNING: " + safety.msg + "\n\nDo you still wish to open this link?")) return;
+    }
+    window.open(currentQRText, "_blank", "noopener");
+  }else{
+    location.href = currentQRText;
+  }
+};
+
+$("copyBtn").onclick = () => copyText(currentQRText);
+
+$("shareBtn").onclick = async () => {
+  try{
+    if(navigator.share){
+      await navigator.share({ title:"ULTRA QR", text:currentQRText });
+    }else{
+      await navigator.clipboard.writeText(currentQRText);
+      toast("Copied");
+    }
+  }catch(e){}
+};
+
+$("saveBtn").onclick = () => {
+  if(!favorites.some(x => x.data === currentQRText)){
+    favorites.unshift({ data: currentQRText, type: detectType(currentQRText), time: new Date().toISOString() });
+    favorites = favorites.slice(0,50);
+    save();
+    toast("Saved to favorites");
+  }else{
+    toast("Already saved");
+  }
+};
+
+window.pickImage = function(){ $("imageInput").click(); };
+$("imageInput").onchange = async function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const img = new Image();
+  img.onload = () => {
+    const canvas = $("scanCanvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently:true });
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    ctx.drawImage(img, 0, 0);
+    const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const code = window.jsQR?.(data.data, data.width, data.height, { inversionAttempts:"attemptBoth" });
+    if(code && code.data){
+      handleScan(code.data);
+      toast("QR detected");
+    }else{
+      toast("No QR code found in image");
+    }
+  };
+  img.src = URL.createObjectURL(file);
+  e.target.value = "";
+};
+
+const forms = {
+  url:`<div class="label">Website URL</div><input id="f1" placeholder="https://example.com">`,
+  text:`<div class="label">Text</div><textarea id="f1" placeholder="Type any text..."></textarea>`,
+  phone:`<div class="label">Phone number</div><input id="f1" placeholder="+94 77 123 4567">`,
+  email:`<div class="row"><div><div class="label">Email</div><input id="f1" placeholder="name@example.com"></div><div><div class="label">Subject</div><input id="f2" placeholder="Hello"></div></div><div class="label">Message</div><textarea id="f3" placeholder="Email message"></textarea>`,
+  sms:`<div class="label">Phone</div><input id="f1" placeholder="+94 77 123 4567"><div class="label">Message</div><textarea id="f2" placeholder="Your message"></textarea>`,
+  wifi:`<div class="label">Network name</div><input id="f1" placeholder="Wi-Fi name"><div class="row"><div><div class="label">Password</div><input id="f2" type="text" placeholder="Password"></div><div><div class="label">Security</div><select id="f3"><option>WPA</option><option>WEP</option><option>nopass</option></select></div></div>`,
+  contact:`<div class="row"><div><div class="label">Name</div><input id="f1" placeholder="Your name"></div><div><div class="label">Phone</div><input id="f2" placeholder="+94..."></div></div><div class="label">Email</div><input id="f3" placeholder="name@example.com"><div class="label">Organization</div><input id="f4" placeholder="Company / School">`,
+  location:`<div class="row"><div><div class="label">Latitude</div><input id="f1" placeholder="6.9271"></div><div><div class="label">Longitude</div><input id="f2" placeholder="79.8612"></div></div>`
+};
+
+function renderForm(){ $("formArea").innerHTML = forms[currentType] || forms.url; }
+
+window.setType = function(type){
+  currentType = type;
+  document.querySelectorAll(".tab,.chip").forEach(b =>
+    b.classList.toggle("active", b.dataset.type === type)
+  );
+  renderForm();
+};
+
+document.querySelectorAll(".tab,.chip").forEach(b =>
+  b.onclick = () => setType(b.dataset.type)
+);
+
+renderForm();
+
+document.querySelectorAll("#colorRow .color-dot").forEach(b =>
+  b.onclick = () => {
+    document.querySelectorAll("#colorRow .color-dot").forEach(x => x.classList.remove("selected"));
+    b.classList.add("selected");
+    currentQRColor = b.dataset.color;
+  }
+);
+
+function formData(){
+  const v = id => ($(id)?.value || "").trim();
+  switch(currentType){
+    case "url": return v("f1");
+    case "text": return v("f1");
+    case "phone": return "tel:" + v("f1");
+    case "email": return "mailto:" + v("f1") + "?subject=" + encodeURIComponent(v("f2")) + "&body=" + encodeURIComponent(v("f3"));
+    case "sms": return "SMSTO:" + v("f1") + ":" + v("f2");
+    case "wifi": return `WIFI:T:${v("f3")};S:${v("f1")};P:${v("f2")};;`;
+    case "contact": return `BEGIN:VCARD\nVERSION:3.0\nFN:${v("f1")}\nTEL:${v("f2")}\nEMAIL:${v("f3")}\nORG:${v("f4")}\nEND:VCARD`;
+    case "location": return `geo:${v("f1")},${v("f2")}`;
+  }
+}
+
+window.generateQR = function(){
+  const text = formData();
+  if(!text){ toast("Fill in the required fields"); return; }
+  currentQRText = text;
+  const style = $("qrStyle").value;
+  const error = $("errorLevel").value;
+  const bg = $("bgColor").value;
+  const badgeVal = $("centerBadge").value;
+
+  QRCode.toCanvas($("qrCanvas"), text, {
+    width: 260,
+    margin: 2,
+    errorCorrectionLevel: error,
+    color: { dark: currentQRColor, light: bg },
+    rendererOpts: { quality: 1 }
+  }, err => {
+    if(err){ toast("Could not generate QR"); return; }
+    $("qrEmpty").classList.add("hidden");
+    $("qrBox").classList.remove("hidden");
+    $("downloadQR").disabled = false;
+
+    // Center Badge
+    const badgeEl = $("qrLogoBadge");
+    if(badgeVal !== "none"){
+      badgeEl.textContent = badgeVal;
+      badgeEl.classList.remove("hidden");
+    } else {
+      badgeEl.classList.add("hidden");
+    }
+
+    toast("Secure QR generated");
+  });
+};
+
+$("downloadQR").onclick = () => {
+  if(!$("qrCanvas")) return;
+  const a = document.createElement("a");
+  a.download = "ultra-secure-qr.png";
+  a.href = $("qrCanvas").toDataURL("image/png");
+  a.click();
+  toast("QR downloaded");
+};
+
+$("shareQR").onclick = async () => {
+  if(!$("qrCanvas").width){ toast("Generate a QR first"); return; }
+  $("qrCanvas").toBlob(async blob => {
+    try{
+      const file = new File([blob], "ultra-secure-qr.png", { type:"image/png" });
+      if(navigator.canShare && navigator.canShare({ files:[file] })){
+        await navigator.share({ title:"ULTRA QR", files:[file] });
+      }else{
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "ultra-secure-qr.png";
+        a.click();
+        toast("Image downloaded");
+      }
+    }catch(e){}
+  }, "image/png");
+};
+
+$("clearQR").onclick = () => {
+  currentQRText = "";
+  $("qrEmpty").classList.remove("hidden");
+  $("qrBox").classList.add("hidden");
+  $("qrLogoBadge").classList.add("hidden");
+  $("downloadQR").disabled = true;
+  renderForm();
+  toast("Cleared");
+};
+
+document.querySelectorAll("#themeColors .color-dot").forEach(b =>
+  b.onclick = () => {
+    document.querySelectorAll("#themeColors .color-dot").forEach(x => x.classList.remove("selected"));
+    b.classList.add("selected");
+    document.documentElement.style.setProperty("--cyan", b.dataset.theme);
+    localStorage.setItem("ultraQR_accent", b.dataset.theme);
+  }
+);
+
+const savedAccent = localStorage.getItem("ultraQR_accent");
+if(savedAccent) document.documentElement.style.setProperty("--cyan", savedAccent);
+
+$("languageSelect").onchange = e => {
+  localStorage.setItem("ultraQR_lang", e.target.value);
+  if(e.target.value === "si"){
+    $("heroTitle").textContent = "ඔබේ ආරක්ෂිත Smart QR මධ්‍යස්ථානය.";
+    $("heroText").textContent = "තර්ජන හඳුනාගැනීමේ ආරක්ෂාව (Threat Shield) සමඟ QR ස්කෑන් කර සාදාගන්න.";
+    $("langBtn").textContent = "සි";
+  }else{
+    $("heroTitle").textContent = "Your secure QR intelligence hub.";
+    $("heroText").textContent = "Scan with advanced threat protection, generate customizable encrypted QR badges, and manage safely.";
+    $("langBtn").textContent = "EN";
+  }
+};
+
+$("langBtn").onclick = () => {
+  const select = $("languageSelect");
+  select.value = select.value === "en" ? "si" : "en";
+  select.dispatchEvent(new Event("change"));
+};
+
+const savedLang = localStorage.getItem("ultraQR_lang");
+if(savedLang){
+  $("languageSelect").value = savedLang;
+  $("languageSelect").dispatchEvent(new Event("change"));
+}
+
+window.exportData = function(){
+  const data = { app: "ULTRA QR", version: "2.2", history: history, favorites: favorites, settings: settings, exportedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:"application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "ultra-qr-secure-backup.json";
+  a.click();
+  toast("Backup exported");
+};
+
+$("importInput").onchange = e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const data = JSON.parse(reader.result);
+      if(Array.isArray(data.history)) history = data.history;
+      if(Array.isArray(data.favorites)) favorites = data.favorites;
+      save();
+      renderHistory();
+      renderHomeRecent();
+      toast("Backup restored");
+    }catch(err){ toast("Invalid backup file"); }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+};
+
+window.clearAllData = function(){
+  if(confirm("Delete all local history and favorites?")){
+    history = [];
+    favorites = [];
+    save();
+    renderHistory();
+    renderHomeRecent();
+    toast("Local data cleared");
+  }
+};
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  });
+}
+
+renderHomeRecent();
+renderHistory();
+updateStats();
+
+window.addEventListener("beforeunload", stopCamera);
+
+})();
+</script>
+
+</body>
+</html>
+
